@@ -1,0 +1,418 @@
+/* --- Global Theme & Core Colors Design Tokens --- */
+:root {
+    --bg-main: #0f172a;
+    --bg-surface: #1e293b;
+    --accent: #38bdf8;
+    --text-primary: #f8fafc;
+    --text-muted: #64748b;
+    --border-light: rgba(255, 255, 255, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    overflow-x: hidden;
+}
+
+/* --- Layout Architecture --- */
+.app-layout {
+    display: flex;
+    width: 100vw;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Hidden control checkbox input toggle indicator hack */
+.menu-toggle-checkbox {
+    display: none;
+}
+
+/* --- Responsive Sidebar Architecture Component --- */
+.sidebar {
+    width: 280px;
+    background-color: #0b0f19;
+    border-right: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    flex-shrink: 0;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+}
+
+.sidebar-branding {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+    justify-content: space-between;
+}
+
+.sidebar-branding div h1 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+.sidebar-branding .version {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.sidebar-close-btn {
+    display: none; /* Only visible on Mobile drawers viewports */
+    font-size: 1.75rem;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.nav-section-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin: 20px 0 8px 4px;
+}
+
+.nav-item-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    margin-bottom: 4px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    width: 100%;
+    transition: all 0.15s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    background: rgba(56, 189, 248, 0.08);
+    color: var(--accent);
+}
+
+.cat-delete-btn {
+    position: absolute;
+    right: 12px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 1.2rem;
+    display: none;
+}
+
+.nav-item-wrapper:hover .cat-delete-btn {
+    display: block;
+}
+
+.cat-delete-btn:hover {
+    color: #ef4444;
+}
+
+.add-cat-widget {
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+.cat-inline-input {
+    width: 100%;
+    background: transparent;
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: white;
+    font-size: 0.85rem;
+    outline: none;
+}
+
+/* --- Main Viewport Canvas Component Area --- */
+.main-viewport {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* Clear grid layout blowout browser bugs */
+}
+
+/* --- Top Header Structural Bar Area --- */
+.top-navbar {
+    height: 70px;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    flex-shrink: 0;
+}
+
+.navbar-left-cluster {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-grow: 1;
+    max-width: 600px;
+}
+
+/* Mobile Responsive Hamburger Icon Lines Component wrapper */
+.hamburger-menu-trigger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 22px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.hamburger-menu-trigger span {
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-primary);
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.premium-search {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+.profile-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: var(--bg-surface);
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border-light);
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+}
+
+/* --- Main Dashboard View Workspace Container --- */
+.stage-content {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    flex-grow: 1;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.view-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap; /* Wraps cleanly on smaller tablet sizes */
+}
+
+.view-header-text h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.btn-primary-action-inline span {
+    background: var(--accent);
+    color: #0f172a;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: inline-block;
+    transition: transform 0.15s ease;
+}
+
+.btn-primary-action-inline span:hover {
+    transform: translateY(-1px);
+}
+
+/* --- Data Presentation Table Sheet Container Element --- */
+.data-table-card {
+    background: var(--bg-surface);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+}
+
+/* Important: This handles overflow on tiny viewports without breaking layout structures */
+.responsive-table-scroll-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.premium-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+    white-space: nowrap; /* Prevents awkward column line breaks */
+}
+
+.premium-table th {
+    background: rgba(15, 23, 42, 0.3);
+    padding: 16px 24px;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.premium-table td {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-light);
+    color: #e2e8f0;
+}
+
+.file-cell-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.taxonomy-pill {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    border: 1px solid var(--border-light);
+}
+
+.timestamp-string {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.action-buttons-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+}
+
+.btn-table-action {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+.btn-delete {
+    color: #ef4444;
+}
+
+.empty-state-cell {
+    padding: 60px !important;
+    text-align: center;
+}
+
+.empty-message span {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.empty-message p {
+    color: var(--text-muted);
+}
+
+
+/* ========================================== */
+/* --- RESPONSIVE MEDIA BREAKPOINT ENGINE --- */
+/* ========================================== */
+
+@media (max-width: 1024px) {
+    .top-navbar {
+        padding: 0 20px;
+    }
+    .stage-content {
+        padding: 24px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* 1. Turn Sidebar into an overlay sliding drawer canvas panel */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        transform: translateX(-100%); /* Shoved entirely off screen natively */
+        box-shadow: 20px 0 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .sidebar-close-btn {
+        display: block; /* Show the manual exit button */
+    }
+
+    /* 2. Show the hamburger button menu bar controller line icon trigger */
+    .hamburger-menu-trigger {
+        display: flex;
+    }
+
+    /* 3. When the control switch input checkbox is activated, slide out the navigation panel frame drawer layout */
+    .menu-toggle-checkbox:checked ~ .app-layout .sidebar {
+        transform: translateX(0);
+    }
+
+    /* 4. Compact the page layout structure text size variables */
+    .view-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .inline-upload-action {
+        width: 100%;
+    }
+
+    .btn-primary-action-inline span {
+        width: 100%;
+        text-align: center;
+        padding: 12px;
+    }
+}

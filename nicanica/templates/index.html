@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviewer Hub - Enterprise Edition</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+    <!-- Hidden native element checkpoint to toggle mobile sliding drawer menu -->
+    <input type="checkbox" id="menu-toggle" class="menu-toggle-checkbox">
+
+    <div class="app-layout">
+        <!-- Sidebar Navigation Drawer -->
+        <aside class="sidebar">
+            <div class="sidebar-branding">
+                <span class="brand-logo">📚</span>
+                <div class="brand-text">
+                    <h1>ReviewerHub</h1>
+                    <span class="version">v1.5.0 — JRS</span>
+                </div>
+                <!-- Close menu x label button for mobile screen views -->
+                <label for="menu-toggle" class="sidebar-close-btn">×</label>
+            </div>
+
+            <!-- Dynamic Category List Management -->
+            <nav class="nav-menu">
+                <p class="nav-section-title">Workspace</p>
+                <a href="/" class="nav-link {% if not request.args.get('cat') %}active{% endif %}">
+                    <span class="nav-icon">📁</span> All Repositories
+                </a>
+
+                <p class="nav-section-title">Quick Filters</p>
+                {% for cat in categories %}
+                <div class="nav-item-wrapper">
+                    <a href="/?cat={{ cat.name }}" class="nav-link {% if request.args.get('cat') == cat.name %}active{% endif %}">
+                        <span class="nav-icon">📁</span> {{ cat.name }}
+                    </a>
+                    <a href="/delete-category/{{ cat.name }}" class="cat-delete-btn" onclick="return confirm('Purge the folder category \'{{ cat.name }}\'? Inside files will default to General.')" title="Remove Category">×</a>
+                </div>
+                {% endfor %}
+            </nav>
+
+            <!-- Inline form block to instantly ingest new categories -->
+            <div class="add-cat-widget">
+                <form action="/add-category" method="POST">
+                    <input type="text" name="category_name" placeholder="+ New Category..." class="cat-inline-input" required autocomplete="off">
+                </form>
+            </div>
+        </aside>
+
+        <!-- Main Panel Content Viewport -->
+        <main class="main-viewport">
+            <!-- Professional Responsive Header -->
+            <header class="top-navbar">
+                <div class="navbar-left-cluster">
+                    <!-- Hamburger button visible only on tablets / phones -->
+                    <label for="menu-toggle" class="hamburger-menu-trigger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </label>
+                    <form action="/" method="GET" class="search-form">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" name="search" class="premium-search" placeholder="Query repositories..." value="{{ search_query }}">
+                    </form>
+                </div>
+                <div class="profile-badge">
+                    <span class="status-indicator"></span>
+                    JRS
+                </div>
+            </header>
+
+            <!-- Dashboard Stage Content Block -->
+            <div class="stage-content">
+                <div class="view-header-row">
+                    <div class="view-header-text">
+                        <h2>
+                            {% if request.args.get('cat') %}
+                                📂 {{ request.args.get('cat') }} Folder
+                            {% else %}
+                                📁 Document Index Explorer
+                            {% endif %}
+                        </h2>
+                        <p class="subtitle">Manage, categorize, and read your active local study modules.</p>
+                    </div>
+
+                    <!-- Inline contextual upload action bar inside the workspace -->
+                    <div class="inline-upload-action">
+                        <form action="/upload" method="POST" enctype="multipart/form-data" id="uploadForm">
+                            <input type="hidden"
+                                   name="category"
+                                   id="categoryInput"
+                                   value="{{ request.args.get('cat', 'General') }}">
+
+                            <label class="btn-primary-action-inline">
+                                <span>+ Upload to this Section</span>
+                                <input type="file" name="file" onchange="document.getElementById('uploadForm').submit()" hidden>
+                            </label>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Asset Data Card (With native horizontal scroll container for mobile screens) -->
+                <div class="data-table-card">
+                    <div class="responsive-table-scroll-wrapper">
+                        <table class="premium-table">
+                            <thead>
+                                <tr>
+                                    <th>Asset Reference Descriptor</th>
+                                    <th>Functional Taxonomy</th>
+                                    <th>Timestamp Entry</th>
+                                    <th style="text-align: right;">System Commands</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for file in files %}
+                                <tr>
+                                    <td>
+                                        <div class="file-cell-info">
+                                            <span class="doc-icon">
+                                                {% if 'pdf' in file.filename.lower() %}📕
+                                                {% elif 'doc' in file.filename.lower() %}📘
+                                                {% elif 'xls' in file.filename.lower() %}📗
+                                                {% else %}📝{% endif %}
+                                            </span>
+                                            <span class="doc-title-string" title="{{ file.filename }}">{{ file.filename }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="taxonomy-pill">{{ file.category }}</span>
+                                    </td>
+                                    <td class="timestamp-string">
+                                        {{ file.upload_date }}
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <div class="action-buttons-group">
+                                            <a href="/download/{{ file.filename }}" class="btn-table-action">Retrieve</a>
+                                            <a href="/delete/{{ file.id }}" class="btn-table-action btn-delete" onclick="return confirm('Are you sure you want to permanently purge this file?')">Delete</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="4" class="empty-state-cell">
+                                        <div class="empty-message">
+                                            <span>📂</span>
+                                            <p>No asset structures mapped inside this pipeline segment.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
